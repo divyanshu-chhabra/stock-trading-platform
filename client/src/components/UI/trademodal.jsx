@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './trademodal.css';
+import Button from './button';
 
 const TradeModal = ({ isOpen, onClose, ticker, currentPrice, onTrade }) => {
   const [shares, setShares] = useState(1);
@@ -6,13 +8,29 @@ const TradeModal = ({ isOpen, onClose, ticker, currentPrice, onTrade }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={{ position: 'fixed', top: '20%', left: '50%', transform: 'translate(-50%, 0)', backgroundColor: 'white', padding: '20px', border: '1px solid black' }}>
-      <h3>Trade {ticker}</h3>
-      <p>Current Price: ${currentPrice}</p>
-      <input type="number" min="1" value={shares} onChange={(e) => setShares(e.target.value)} />
-      <button onClick={() => onTrade(shares, 'BUY')}>Buy</button>
-      <button onClick={() => onTrade(shares, 'SELL')}>Sell</button>
-      <button onClick={onClose}>Close</button>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="trade-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3 className="modal-title">Trade {ticker}</h3>
+          <button className="close-button" onClick={onClose}>&times;</button>
+        </div>
+        <p>Current Price: ${currentPrice}</p>
+        <div className="trade-input-group">
+          <label htmlFor="shares-input">Shares</label>
+          <input
+            id="shares-input"
+            className="trade-input"
+            type="number"
+            min="1"
+            value={shares}
+            onChange={(e) => setShares(e.target.value)}
+          />
+        </div>
+        <div className="modal-actions">
+          <Button text="Buy" onClick={() => onTrade(shares, 'BUY')} className="button-primary" />
+          <Button text="Sell" onClick={() => onTrade(shares, 'SELL')} className="button-danger" />
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,83 @@
+/* client/src/pages/Market/Market.css */
+
+.market-container {
+  padding: 2rem 3rem;
+  background-color: #000000;
+  color: #e0e0e0;
+}
+
+.market-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.stock-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.stock-item {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stock-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.2);
+}
+
+.stock-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  text-decoration: none;
+  color: #e0e0e0;
+}
+
+.stock-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-ticker {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.stock-name {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.stock-price-info {
+  text-align: right;
+}
+
+.stock-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.stock-change {
+  display: block;
+  font-size: 1rem;
+}
+
+.stock-change.positive {
+  color: #00c805;
+}
+
+.stock-change.negative {
+  color: #ff5000;
+}

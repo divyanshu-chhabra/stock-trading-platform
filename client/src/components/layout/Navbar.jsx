@@ -1,21 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import Button from '../UI/button';
+import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <nav style={{ padding: '10px 20px', backgroundColor: '#2c3e50', color: 'white', display: 'flex', justifyContent: 'space-between' }}>
-      <h2><Link to="/" style={{ color: 'white', textDecoration: 'none' }}>TradePro</Link></h2>
-      <div>
+    <nav className="navbar">
+      <h2 className="navbar-brand">
+        <Link to="/">Stocks<span>More</span></Link>
+      </h2>
+      <div className="navbar-links">
         {user ? (
           <>
-            <span style={{ marginRight: '15px' }}>Hello, {user.username}</span>
-            <button onClick={logout}>Logout</button>
+            <span>Hello, {user.username}</span>
+            <Button text="Logout" onClick={logout} className="button-secondary" />
           </>
         ) : (
-          <Link to="/login" style={{ color: 'white' }}>Login</Link>
+          <Link to="/login">Login</Link>
         )}
       </div>
     </nav>

@@ -1,13 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import './Sidebar.css';
 
 const Sidebar = () => {
+  const location = useLocation();
+
+  const getButtonClass = (path) => {
+    return location.pathname === path
+      ? 'sidebar-button active'
+      : 'sidebar-button';
+  };
+
   return (
-    <aside style={{ width: '200px', backgroundColor: '#ecf0f1', padding: '20px' }}>
-      <ul style={{ listStyle: 'none', lineHeight: '2' }}>
-        <li><Link to="/">Dashboard</Link></li>
-        <li><Link to="/market">Market Data</Link></li>
-      </ul>
+    <aside className="sidebar">
+      <Link to="/" className={getButtonClass('/')}>
+        Dashboard
+      </Link>
+      <Link to="/market" className={getButtonClass('/market')}>
+        Market Data
+      </Link>
     </aside>
   );
 };

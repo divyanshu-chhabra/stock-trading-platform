@@ -1,0 +1,67 @@
+/* client/src/components/UI/button.css */
+.button {
+  display: inline-block;
+  padding: 12px 28px;
+  margin: 8px;
+  border-radius: 50px; /* Fully rounded corners */
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+/* --- Primary Button (default) --- */
+.button-primary {
+  background: linear-gradient(45deg, #007bff, #0056b3);
+  color: white;
+}
+
+.button-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+.button-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.4);
+}
+
+/* --- Secondary / Outline Button --- */
+.button-secondary {
+  background: transparent;
+  color: #007bff;
+  border: 2px solid #007bff;
+}
+
+.button-secondary:hover {
+  background: #007bff;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.button-secondary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* --- Destructive / Danger Button --- */
+.button-danger {
+  background: linear-gradient(45deg, #ff5000, #c80000);
+  color: white;
+}
+
+.button-danger:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 80, 0, 0.4);
+}
+
+.button-danger:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(255, 80, 0, 0.4);
+}

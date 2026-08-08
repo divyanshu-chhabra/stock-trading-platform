@@ -1,0 +1,41 @@
+/* client/src/components/layout/Sidebar.css */
+.sidebar {
+  width: 250px;
+  min-height: calc(100vh - 70px); /* Adjust based on navbar height */
+  background-color: #0d0d0d;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  color: #a0a0a0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.sidebar-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transform: translateX(4px); /* Slight slide right on hover */
+}
+
+/* Add this class conditionally in React when a page is active */
+.sidebar-button.active {
+  background: rgba(0, 123, 255, 0.1); /* Subtle blue tint */
+  color: #007bff;
+  border-left: 4px solid #007bff;
+}
