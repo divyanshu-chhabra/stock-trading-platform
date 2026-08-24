@@ -1,0 +1,68 @@
+/* client/src/components/layout/Footer.css */
+
+.app-footer {
+  background: rgba(14, 14, 14, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.25rem 2rem;
+  margin-top: auto;
+  font-family: 'Inter', -apple-system, sans-serif;
+  z-index: 10;
+}
+
+.footer-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #888888;
+}
+
+.footer-brand {
+  font-weight: 600;
+  color: #cccccc;
+}
+
+.footer-brand span {
+  color: #007bff;
+}
+
+.footer-creator {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #a0a0a0;
+}
+
+.footer-creator strong {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: linear-gradient(90deg, #007bff, #00d084);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-heart {
+  color: #ff4757;
+  display: inline-block;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}

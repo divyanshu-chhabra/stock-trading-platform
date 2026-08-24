@@ -1,0 +1,165 @@
+/* client/src/pages/stockdetail/StockDetail.css */
+
+.stock-detail-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.stock-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stock-title-section h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.stock-badge {
+  display: inline-block;
+  background: rgba(0, 123, 255, 0.15);
+  color: #007bff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(0, 123, 255, 0.3);
+}
+
+.stock-price-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.stock-live-price {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.stock-price-change {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.stock-price-change.positive {
+  color: #00c805;
+}
+
+.stock-price-change.negative {
+  color: #ff5000;
+}
+
+.stock-action-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-open-trade {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem 2.2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-open-trade:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.45);
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stock-chart-card, .stock-position-card, .stock-stats-card {
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.7rem;
+}
+
+.stock-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.stock-stat-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #a0a0a0;
+}
+
+.stock-stat-item strong {
+  color: #ffffff;
+}
+
+.trade-alert-banner {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+.trade-alert-banner.success {
+  background: rgba(0, 200, 5, 0.15);
+  border: 1px solid rgba(0, 200, 5, 0.3);
+  color: #00e607;
+}
+
+.trade-alert-banner.error {
+  background: rgba(255, 80, 0, 0.15);
+  border: 1px solid rgba(255, 80, 0, 0.3);
+  color: #ff6b6b;
+}
+
+@media (max-width: 900px) {
+  .stock-grid {
+    grid-template-columns: 1fr;
+  }
+  .stock-price-section {
+    align-items: flex-start;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

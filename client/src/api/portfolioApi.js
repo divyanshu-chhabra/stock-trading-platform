@@ -16,3 +16,8 @@ export const getPortfolio = async () => {
   const response = await axios.get('/api/portfolio');
   return response.data;
 };
+
+export const getTransactions = async () => {
+  const response = await axios.get('/api/portfolio/transactions');
+  return response.data;
+};

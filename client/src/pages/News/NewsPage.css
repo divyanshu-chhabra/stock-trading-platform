@@ -1,0 +1,26 @@
+/* client/src/pages/News/NewsPage.css */
+
+.news-page-container {
+  padding: 2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: #ffffff;
+}
+
+.news-page-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.news-page-header h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.news-page-header p {
+  color: #888888;
+  font-size: 1rem;
+}

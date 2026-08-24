@@ -1,11 +1,36 @@
-const Portfolio = require('../models/Portfolio');
-const User = require('../models/User');
-const Transaction = require('../models/Transaction');
+const Portfolio = require('../models/portfolio');
+const User = require('../models/user');
+const Transaction = require('../models/transaction');
 
 exports.getPortfolio = async (req, res, next) => {
   try {
-    const portfolio = await Portfolio.find({ user: req.user.id });
-    res.json(portfolio);
+    const userId = req.user.id;
+    const [holdings, user, transactions] = await Promise.all([
+      Portfolio.find({ user: userId }),
+      User.findById(userId),
+      Transaction.find({ user: userId }).sort({ createdAt: -1 }).limit(10)
+    ]);
+
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    res.json({
+      holdings,
+      balance: user.balance,
+      transactions
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getTransactions = async (req, res, next) => {
+  try {
+    const transactions = await Transaction.find({ user: req.user.id })
+      .sort({ createdAt: -1 });
+    res.json(transactions);
   } catch (error) {
     next(error);
   }
@@ -14,62 +39,68 @@ exports.getPortfolio = async (req, res, next) => {
 exports.buyStock = async (req, res, next) => {
   try {
     const { ticker, shares, price } = req.body;
-    const totalCost = shares * price;
-    const userId = req.user.id; // Assuming req.user is populated by authMiddleware
+    const numShares = Number(shares);
+    const numPrice = Number(price);
 
-    // 1. Fetch the user to check balance
+    if (!ticker || isNaN(numShares) || numShares <= 0 || isNaN(numPrice) || numPrice <= 0) {
+      res.status(400);
+      throw new Error('Invalid trade parameters: positive shares and price are required.');
+    }
+
+    const totalCost = Number((numShares * numPrice).toFixed(2));
+    const userId = req.user.id;
+
+    // 1. Fetch user to check and deduct balance
     const user = await User.findById(userId);
     if (!user) {
       res.status(404);
       throw new Error('User not found');
     }
 
-    // 2. Check if user has sufficient balance
     if (user.balance < totalCost) {
       res.status(400);
-      throw new Error('Insufficient balance to buy stock');
+      throw new Error(`Insufficient balance ($${user.balance.toFixed(2)}) to complete purchase of $${totalCost.toFixed(2)}.`);
     }
 
-    // 3. Deduct totalCost from user's balance
-    user.balance -= totalCost;
+    user.balance = Number((user.balance - totalCost).toFixed(2));
     await user.save();
 
-    // 4. Update or create portfolio entry
-    let portfolioEntry = await Portfolio.findOne({ user: userId, ticker });
+    // 2. Update or create portfolio entry
+    let portfolioEntry = await Portfolio.findOne({ user: userId, ticker: ticker.toUpperCase() });
 
     if (portfolioEntry) {
-      // Update existing entry
       const existingValue = portfolioEntry.averagePrice * portfolioEntry.shares;
-      const newValue = price * shares;
-      const newTotalShares = portfolioEntry.shares + shares;
-      portfolioEntry.averagePrice = (existingValue + newValue) / newTotalShares;
-      portfolioEntry.shares += shares;
+      const newValue = numPrice * numShares;
+      const newTotalShares = portfolioEntry.shares + numShares;
+      portfolioEntry.averagePrice = Number(((existingValue + newValue) / newTotalShares).toFixed(2));
+      portfolioEntry.shares = newTotalShares;
+      await portfolioEntry.save();
     } else {
-      // Create new entry
       portfolioEntry = await Portfolio.create({
         user: userId,
-        ticker,
-        shares,
-        averagePrice: price,
+        ticker: ticker.toUpperCase(),
+        shares: numShares,
+        averagePrice: Number(numPrice.toFixed(2)),
       });
     }
-    await portfolioEntry.save();
 
-    // 5. Log the transaction
-    await Transaction.create({
+    // 3. Log the transaction
+    const transaction = await Transaction.create({
       user: userId,
-      ticker,
-      type: 'buy',
-      shares,
-      price,
+      ticker: ticker.toUpperCase(),
+      type: 'BUY',
+      shares: numShares,
+      price: numPrice,
       totalAmount: totalCost,
-      date: new Date(),
     });
 
-    // Respond with updated portfolio or success message
-    res.json({ message: `Successfully bought ${shares} shares of ${ticker}` });
-    // Consider returning the updated portfolio or user balance
-    // res.json({ message: `Successfully bought ${shares} shares of ${ticker}`, portfolio: portfolioEntry, userBalance: user.balance });
+    res.status(200).json({
+      success: true,
+      message: `Successfully bought ${numShares} share(s) of ${ticker.toUpperCase()}`,
+      balance: user.balance,
+      portfolio: portfolioEntry,
+      transaction,
+    });
   } catch (error) {
     next(error);
   }
@@ -78,57 +109,61 @@ exports.buyStock = async (req, res, next) => {
 exports.sellStock = async (req, res, next) => {
   try {
     const { ticker, shares, price } = req.body;
-    const userId = req.user.id; // Assuming req.user is populated by authMiddleware
-    const totalProceeds = shares * price;
+    const numShares = Number(shares);
+    const numPrice = Number(price);
 
-    // 1. Fetch the user's portfolio entry for the given ticker
-    let portfolioEntry = await Portfolio.findOne({ user: userId, ticker });
-
-    if (!portfolioEntry || portfolioEntry.shares < shares) {
+    if (!ticker || isNaN(numShares) || numShares <= 0 || isNaN(numPrice) || numPrice <= 0) {
       res.status(400);
-      throw new Error('Insufficient shares to sell');
+      throw new Error('Invalid trade parameters: positive shares and price are required.');
     }
 
-    // 2. Update portfolio entry: reduce shares
-    portfolioEntry.shares -= shares;
+    const userId = req.user.id;
+    const totalProceeds = Number((numShares * numPrice).toFixed(2));
+
+    // 1. Fetch the user's portfolio entry
+    const portfolioEntry = await Portfolio.findOne({ user: userId, ticker: ticker.toUpperCase() });
+
+    if (!portfolioEntry || portfolioEntry.shares < numShares) {
+      res.status(400);
+      throw new Error(`Insufficient shares to sell. You currently own ${portfolioEntry ? portfolioEntry.shares : 0} shares.`);
+    }
+
+    // 2. Update portfolio entry: reduce shares or remove if zero
+    portfolioEntry.shares -= numShares;
 
     if (portfolioEntry.shares === 0) {
-      // If all shares are sold, remove the portfolio entry
-      await portfolioEntry.remove();
+      await Portfolio.deleteOne({ _id: portfolioEntry._id });
     } else {
       await portfolioEntry.save();
     }
 
-    // 3. Fetch the user to update balance
+    // 3. Update user balance
     const user = await User.findById(userId);
     if (!user) {
       res.status(404);
       throw new Error('User not found');
     }
 
-    // 4. Add totalProceeds to user's balance
-    user.balance += totalProceeds;
+    user.balance = Number((user.balance + totalProceeds).toFixed(2));
     await user.save();
 
-    // 5. Log the transaction
-    await Transaction.create({
+    // 4. Log the transaction
+    const transaction = await Transaction.create({
       user: userId,
-      ticker,
-      type: 'sell',
-      shares,
-      price,
+      ticker: ticker.toUpperCase(),
+      type: 'SELL',
+      shares: numShares,
+      price: numPrice,
       totalAmount: totalProceeds,
-      date: new Date(),
     });
 
-    // Respond with updated portfolio or success message
-    res.json({ message: `Successfully sold ${shares} shares of ${ticker}` });
-    // Consider returning the updated portfolio or user balance
-    // res.json({
-    //   message: `Successfully sold ${shares} shares of ${ticker}`,
-    //   portfolio: portfolioEntry.shares === 0 ? null : portfolioEntry,
-    //   userBalance: user.balance
-    // });
+    res.status(200).json({
+      success: true,
+      message: `Successfully sold ${numShares} share(s) of ${ticker.toUpperCase()}`,
+      balance: user.balance,
+      portfolio: portfolioEntry.shares === 0 ? null : portfolioEntry,
+      transaction,
+    });
   } catch (error) {
     next(error);
   }

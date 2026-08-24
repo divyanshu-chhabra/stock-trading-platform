@@ -1,13 +1,12 @@
-/* client/src/components/UI/TradeModal.css */
+/* client/src/components/UI/trademodal.css */
 
-/* The blurred backdrop covering the screen */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -16,15 +15,14 @@
   z-index: 9999;
 }
 
-/* The actual pop-up box */
 .trade-modal {
-  background: #1a1a1a;
-  width: 100%;
-  max-width: 450px;
+  background: #141414;
+  width: 90%;
+  max-width: 440px;
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.8rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
   animation: slideUp 0.3s ease-out forwards;
 }
 
@@ -32,14 +30,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: #ffffff;
   margin: 0;
 }
@@ -48,8 +46,9 @@
   background: transparent;
   border: none;
   color: #888;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   cursor: pointer;
+  line-height: 1;
   transition: color 0.2s;
 }
 
@@ -57,9 +56,35 @@
   color: #ffffff;
 }
 
-/* Form inputs for quantity/price */
+.trade-info-panel {
+  background: #1c1c1c;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trade-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.trade-info-row strong {
+  color: #ffffff;
+}
+
+.info-highlight {
+  color: #00d084;
+  font-weight: 600;
+}
+
 .trade-input-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -67,58 +92,96 @@
 
 .trade-input-group label {
   color: #a0a0a0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .trade-input {
   background: #0d0d0d;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: white;
-  padding: 1rem;
+  padding: 0.85rem 1rem;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   transition: border-color 0.2s;
 }
 
 .trade-input:focus {
   outline: none;
-  border-color: #007bff; /* Glows blue when typing */
+  border-color: #007bff;
 }
 
-/* Action Buttons */
+.trade-total-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: rgba(0, 123, 255, 0.08);
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.total-amount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.trade-error-msg {
+  background: rgba(255, 77, 77, 0.15);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  color: #ff6b6b;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
 .modal-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
 }
 
 .btn-execute {
   flex: 1;
-  padding: 1rem;
+  padding: 0.9rem;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
   color: white;
   cursor: pointer;
-  transition: transform 0.2s, opacity 0.2s;
+  transition: all 0.2s ease;
 }
 
-.btn-execute:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+.btn-execute:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
 }
 
-/* Specific colors for buying and selling */
 .btn-buy {
-  background-color: #00c805;
+  background: linear-gradient(135deg, #00c805, #009904);
+}
+
+.btn-buy:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 200, 5, 0.4);
 }
 
 .btn-sell {
-  background-color: #ff5000;
+  background: linear-gradient(135deg, #ff5000, #c80000);
 }
 
-/* Smooth entry animation */
+.btn-sell:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 80, 0, 0.4);
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;

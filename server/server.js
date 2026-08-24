@@ -3,8 +3,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const http = require('http');
 const connectDB = require('./config/db');
-const { initSocket } = require('./services/socketService');
-const { errorHandler } = require('./middleware/errorHandler');
+const { initSocket } = require('./services/socketservice');
+const { errorHandler } = require('./middleware/errorhandler');
 
 dotenv.config();
 connectDB();

@@ -6,13 +6,19 @@ export const useMarketData = (ticker) => {
   const [livePrice, setLivePrice] = useState(null);
 
   useEffect(() => {
-    if (!socket) return;
+    if (!socket || !ticker) return;
 
-    socket.on('price_update', (data) => {
-      if (data.ticker === ticker) setLivePrice(data.price);
-    });
+    const handlePriceUpdate = (data) => {
+      if (data.ticker && data.ticker.toUpperCase() === ticker.toUpperCase()) {
+        setLivePrice(data.price);
+      }
+    };
 
-    return () => socket.off('price_update');
+    socket.on('price_update', handlePriceUpdate);
+
+    return () => {
+      socket.off('price_update', handlePriceUpdate);
+    };
   }, [socket, ticker]);
 
   return livePrice;

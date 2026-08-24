@@ -14,10 +14,13 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <Link to="/" className={getButtonClass('/')}>
-        Dashboard
+        <span>📊</span> Dashboard
       </Link>
       <Link to="/market" className={getButtonClass('/market')}>
-        Market Data
+        <span>📈</span> Market Data
+      </Link>
+      <Link to="/news" className={getButtonClass('/news')}>
+        <span>📰</span> Market News
       </Link>
     </aside>
   );

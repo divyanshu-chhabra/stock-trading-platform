@@ -1,12 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
-import Sidebar from './components/layout/Sidebar.jsx';
-import Dashboard from './pages/Dashboard/dashboard.jsx';
-import Login from './pages/Auth/login.jsx';
-import Register from './pages/Auth/register.jsx';
-import Market from './pages/Market/Market.jsx';
-import StockDetail from './pages/stockdetail/StockDetail.jsx';
+import Sidebar from './components/layout/Sidebar';
+import Footer from './components/layout/Footer';
+import Dashboard from './pages/Dashboard/dashboard';
+import Login from './pages/Auth/login';
+import Register from './pages/Auth/register';
+import Market from './pages/Market/Market';
+import StockDetail from './pages/stockdetail/StockDetail';
+import NewsPage from './pages/News/NewsPage';
 
 function App() {
   return (
@@ -21,10 +23,12 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/market" element={<Market />} />
+              <Route path="/news" element={<NewsPage />} />
               <Route path="/stock/:ticker" element={<StockDetail />} />
             </Routes>
           </div>
         </div>
+        <Footer />
       </div>
     </Router>
   );
