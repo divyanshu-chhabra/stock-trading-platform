@@ -9,13 +9,16 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h2 className="navbar-brand">
-        <Link to="/">Stocks<span>More</span></Link>
-      </h2>
+      <div className="navbar-brand-wrapper">
+        <Link to="/" className="navbar-brand">
+          Stocks<span>More</span>
+        </Link>
+        <span className="navbar-tagline">a stock-trading-platform</span>
+      </div>
       <div className="navbar-links">
         {user ? (
           <>
-            <span>Hello, {user.username}</span>
+            <span className="user-greeting">Hello, {user.username}</span>
             <Button text="Logout" onClick={logout} className="button-secondary" />
           </>
         ) : (
