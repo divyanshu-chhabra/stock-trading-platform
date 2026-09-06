@@ -16,6 +16,9 @@ export const useMarketData = (ticker) => {
 
     socket.on('price_update', handlePriceUpdate);
 
+    // Actively request updates for this ticker
+    socket.emit('subscribe', ticker);
+
     return () => {
       socket.off('price_update', handlePriceUpdate);
     };
