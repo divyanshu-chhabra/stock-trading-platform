@@ -173,15 +173,36 @@ const StockDetail = () => {
                 <strong>{userHolding ? userHolding.shares : 0}</strong>
               </div>
               <div className="stock-stat-item">
-                <span>Average Cost:</span>
+                <span>Average Purchase Price:</span>
                 <strong>${userHolding ? Number(userHolding.averagePrice).toFixed(2) : '0.00'}</strong>
               </div>
               <div className="stock-stat-item">
-                <span>Total Market Value:</span>
+                <span>Total Purchased Cost:</span>
+                <strong>${userHolding ? (userHolding.shares * Number(userHolding.averagePrice)).toFixed(2) : '0.00'}</strong>
+              </div>
+              <div className="stock-stat-item">
+                <span>Current Market Value:</span>
                 <strong style={{ color: '#00d084' }}>
                   ${userHolding ? (userHolding.shares * currentPrice).toFixed(2) : '0.00'}
                 </strong>
               </div>
+              {userHolding && userHolding.shares > 0 && (
+                <div className="stock-stat-item">
+                  <span>Unrealized Profit/Loss:</span>
+                  {(() => {
+                    const cost = userHolding.shares * Number(userHolding.averagePrice);
+                    const val = userHolding.shares * currentPrice;
+                    const diff = val - cost;
+                    const pct = cost > 0 ? (diff / cost) * 100 : 0;
+                    const isPos = diff >= 0;
+                    return (
+                      <strong style={{ color: isPos ? '#00e607' : '#ff6b6b' }}>
+                        {isPos ? '+' : ''}${diff.toFixed(2)} ({isPos ? '+' : ''}{pct.toFixed(2)}%)
+                      </strong>
+                    );
+                  })()}
+                </div>
+              )}
               {userBalance !== null && (
                 <div className="stock-stat-item">
                   <span>Available Cash:</span>
@@ -220,6 +241,7 @@ const StockDetail = () => {
         loading={tradeLoading}
         userBalance={userBalance}
         ownedShares={userHolding ? userHolding.shares : 0}
+        averageBuyPrice={userHolding ? userHolding.averagePrice : 0}
         error={tradeError}
       />
     </div>
