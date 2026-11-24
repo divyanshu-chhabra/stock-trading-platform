@@ -1,5 +1,10 @@
 import api from './axiosConfig';
 
+export const getFeaturedStocks = async () => {
+  const response = await api.get('/api/market/stocks');
+  return response.data;
+};
+
 export const getStockQuote = async (ticker) => {
   const response = await api.get(`/api/market/quote/${ticker}`);
   return response.data;

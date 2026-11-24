@@ -113,3 +113,42 @@
 .auth-footer a:hover {
   text-decoration: underline;
 }
+
+.auth-disclaimer {
+  background: rgba(0, 123, 255, 0.08);
+  border: 1px solid rgba(0, 123, 255, 0.28);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.auth-disclaimer-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6cb2ff;
+  background: rgba(0, 123, 255, 0.16);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  margin-bottom: 0.45rem;
+}
+
+.auth-disclaimer-text {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #c9d4e4;
+}
+
+.auth-coldstart-note {
+  background: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.32);
+  color: #ffd666;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.83rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}

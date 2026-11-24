@@ -1,4 +1,13 @@
-const { fetchStockQuote, fetchMarketNews } = require('../services/marketApiService');
+const { fetchStockQuote, fetchMarketNews, fetchFeaturedStocks } = require('../services/marketApiService');
+
+exports.getStocks = async (req, res, next) => {
+  try {
+    const stocks = await fetchFeaturedStocks();
+    res.json(stocks);
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.getQuote = async (req, res, next) => {
   try {

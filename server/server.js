@@ -13,8 +13,25 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map((origin) => origin.trim()).filter(Boolean)
+  : null;
+
+app.use(
+  cors({
+    origin: allowedOrigins && allowedOrigins.length > 0 ? allowedOrigins : '*',
+  })
+);
 app.use(express.json());
+
+// Health check & root endpoints (useful for Render uptime checks)
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', service: 'StocksMore API' });
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
+});
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));

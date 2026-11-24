@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="app-footer">
       <div className="footer-content">
         <div className="footer-brand">
-          Stocks<span>More</span> &copy; {currentYear} &bull; All Rights Reserved
+          Stocks<span>More</span> &copy; {currentYear} &bull; Virtual Paper Trading Simulator (Practice Only)
         </div>
         <div className="footer-creator">
           Created by <strong>Divyanshu Chhabra</strong>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import { useAuth } from '../../hooks/useAuth';
@@ -9,9 +9,19 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [slowNotice, setSlowNotice] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading) {
+      setSlowNotice(false);
+      return;
+    }
+    const timer = setTimeout(() => setSlowNotice(true), 3000);
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,10 +47,26 @@ const Login = () => {
       <div className="auth-card">
         <div className="auth-header">
           <h2>Welcome Back</h2>
-          <p>Login to your StocksMore portfolio</p>
+          <p>Login to your StocksMore paper trading portfolio</p>
+        </div>
+
+        <div className="auth-disclaimer" role="note" aria-label="Paper Trading Disclaimer">
+          <div className="auth-disclaimer-badge">Virtual Paper Trading • Practice Only</div>
+          <p className="auth-disclaimer-text">
+            <strong>Disclaimer:</strong> StocksMore is a virtual stock trading platform designed
+            strictly for <strong>learning and practice (paper trading)</strong>. All balances and
+            orders use simulated virtual funds—no real money, live brokerage execution, or
+            financial advice is involved.
+          </p>
         </div>
 
         {error && <div className="auth-error">{error}</div>}
+        {slowNotice && !error && (
+          <div className="auth-coldstart-note">
+            Connecting to server — free-tier hosting may take up to 30 seconds to wake up on the
+            first request.
+          </div>
+        )}
 
         <form className="auth-form" onSubmit={handleLogin}>
           <div className="auth-field">
